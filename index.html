@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>학생 모니터링 시스템</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#6366f1",
+            "primary-dark": "#4f46e5",
+            "background-light": "#f3f4f6",
+            "background-dark": "#0f172a",
+            "card-light": "#ffffff",
+            "card-dark": "#1e293b",
+          },
+          fontFamily: {
+            sans: ['"Inter"', '"Noto Sans KR"', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-4 font-sans">
+  
+  <div class="w-full max-w-3xl mx-auto flex flex-col items-center gap-6">
+    
+    <!-- Header -->
+    <header class="text-center">
+      <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-1">
+        학생 모니터링 
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-teal-600">시스템</span>
+      </h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm">AI 기반 실시간 자세 분석</p>
+    </header>
+
+    <!-- Role Selection Cards -->
+    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+      
+      <!-- Teacher Card -->
+      <a href="teacher.html" class="group relative overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-teal-500/50">
+        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-emerald-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-2.5 bg-teal-50 dark:bg-teal-900/20 rounded-lg text-teal-600 dark:text-teal-400 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+              <span class="material-symbols-rounded text-2xl">supervisor_account</span>
+            </div>
+            <span class="material-symbols-rounded text-slate-300 dark:text-slate-600 group-hover:text-teal-500 transition-colors">arrow_forward</span>
+          </div>
+          <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">교사 (Teacher)</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-3">학생들의 학습 상태를 실시간 모니터링</p>
+          <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-teal-500 text-sm">check_circle</span>
+              학습 대시보드
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-teal-500 text-sm">check_circle</span>
+              자리비움 알림
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-teal-500 text-sm">check_circle</span>
+              실시간 영상 확인
+            </li>
+          </ul>
+        </div>
+      </a>
+
+      <!-- Student Card -->
+      <a href="student.html" class="group relative overflow-hidden rounded-xl bg-card-light dark:bg-card-dark border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-indigo-500/50">
+        <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div class="p-2.5 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+              <span class="material-symbols-rounded text-2xl">school</span>
+            </div>
+            <span class="material-symbols-rounded text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors">arrow_forward</span>
+          </div>
+          <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">학생 (Student)</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm mb-3">AI 기반 자세 분석 및 상태 공유</p>
+          <ul class="space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-indigo-500 text-sm">check_circle</span>
+              AI 자세 분석
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-indigo-500 text-sm">check_circle</span>
+              실시간 상태 감지
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="material-symbols-rounded text-indigo-500 text-sm">check_circle</span>
+              자동 리포팅
+            </li>
+          </ul>
+        </div>
+      </a>
+    </div>
+
+    <!-- How to Use Section -->
+    <section class="w-full">
+      <h3 class="font-bold text-sm text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+        <span class="material-symbols-rounded text-base">help</span>
+        이용 절차
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-card-light dark:bg-card-dark p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+          <div class="w-6 h-6 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded text-xs flex items-center justify-center font-bold mb-2">1</div>
+          <h4 class="font-semibold text-slate-800 dark:text-slate-200 text-xs mb-1">세션 생성</h4>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">교사가 서버 시작</p>
+        </div>
+        <div class="bg-card-light dark:bg-card-dark p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+          <div class="w-6 h-6 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded text-xs flex items-center justify-center font-bold mb-2">2</div>
+          <h4 class="font-semibold text-slate-800 dark:text-slate-200 text-xs mb-1">ID 공유</h4>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">학생에게 ID 전달</p>
+        </div>
+        <div class="bg-card-light dark:bg-card-dark p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+          <div class="w-6 h-6 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded text-xs flex items-center justify-center font-bold mb-2">3</div>
+          <h4 class="font-semibold text-slate-800 dark:text-slate-200 text-xs mb-1">접속</h4>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">학생이 ID 입력</p>
+        </div>
+        <div class="bg-card-light dark:bg-card-dark p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+          <div class="w-6 h-6 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 rounded text-xs flex items-center justify-center font-bold mb-2">4</div>
+          <h4 class="font-semibold text-slate-800 dark:text-slate-200 text-xs mb-1">분석 시작</h4>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">AI 자동 분석</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-400 dark:text-slate-500 text-[10px] font-mono">
+      Student Monitor v1.0 • P2P
+    </footer>
+  </div>
+
+  <!-- Dark Mode Toggle -->
+  <button class="fixed top-4 right-4 p-2 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors shadow-sm" onclick="document.documentElement.classList.toggle('dark')">
+    <span class="material-symbols-rounded text-lg dark:hidden">dark_mode</span>
+    <span class="material-symbols-rounded text-lg hidden dark:block">light_mode</span>
+  </button>
+
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</body>
+</html>

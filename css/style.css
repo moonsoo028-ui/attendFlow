@@ -1,0 +1,629 @@
+/* 기본 스타일 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 헤더 */
+header {
+  text-align: center;
+  padding: 30px 0;
+  color: white;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 20px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.back-link:hover {
+  opacity: 1;
+}
+
+/* 역할 선택 */
+.role-selection {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.role-selection h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.role-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.role-card {
+  display: block;
+  padding: 30px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.role-card.teacher {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.role-card.student {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.role-icon {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.role-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.role-card p {
+  opacity: 0.9;
+  margin-bottom: 15px;
+}
+
+.role-card ul {
+  list-style: none;
+  opacity: 0.85;
+}
+
+.role-card li {
+  padding: 5px 0;
+}
+
+.role-card li::before {
+  content: "✓ ";
+}
+
+/* 정보 박스 */
+.info-box, .tech-info {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.info-box h3, .tech-info h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.info-box ol {
+  padding-left: 20px;
+}
+
+.info-box li {
+  padding: 8px 0;
+  line-height: 1.6;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* 버튼 */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-danger {
+  background: #f44336;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #d32f2f;
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 1.2rem;
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+
+/* 설정 섹션 */
+.setup-section {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.setup-section h2 {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* 교사 ID 박스 */
+.teacher-id-box {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f0f7ff;
+  border-radius: 10px;
+}
+
+.setup-section.connected .teacher-id-box {
+  display: block !important;
+}
+
+.id-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.id-display code {
+  background: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-family: monospace;
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+/* 모니터링 섹션 */
+.monitor-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.status-panel {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.status-display {
+  display: inline-block;
+  padding: 20px 40px;
+  border-radius: 15px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  background: #9E9E9E;
+  transition: background 0.3s;
+}
+
+.status-display.status-standing { background: #4CAF50; }
+.status-display.status-sitting { background: #2196F3; }
+.status-display.status-away { background: #f44336; }
+
+.away-timer {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #f44336;
+  font-weight: 600;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.video-container canvas {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.connection-info {
+  text-align: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.connection-info p {
+  margin: 5px 0;
+}
+
+.connected {
+  color: #4CAF50;
+  font-weight: 600;
+}
+
+.disconnected {
+  color: #f44336;
+  font-weight: 600;
+}
+
+/* 대시보드 섹션 */
+.dashboard-section {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-item.standing { background: #e8f5e9; }
+.stat-item.sitting { background: #e3f2fd; }
+.stat-item.away { background: #ffebee; }
+
+.stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.stat-item.standing .stat-value { color: #4CAF50; }
+.stat-item.sitting .stat-value { color: #2196F3; }
+.stat-item.away .stat-value { color: #f44336; }
+
+/* 학생 그리드 */
+.student-grid-container h3,
+.alert-container h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  min-height: 100px;
+}
+
+.student-card {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.student-card.status-standing {
+  border-color: #4CAF50;
+  background: #f1f8e9;
+}
+
+.student-card.status-sitting {
+  border-color: #2196F3;
+  background: #e3f2fd;
+}
+
+.student-card.status-away {
+  border-color: #f44336;
+  background: #ffebee;
+  animation: pulse 1s infinite;
+}
+
+.student-card.status-no_response {
+  border-color: #ff9800;
+  background: #fff3e0;
+  animation: pulse 1.5s infinite;
+}
+
+.student-card.status-disconnected {
+  border-color: #795548;
+  background: #efebe9;
+  opacity: 0.7;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.student-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.student-status {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.away-time {
+  color: #f44336;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.last-update {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 8px;
+}
+
+/* 알림 */
+.alert-container {
+  margin-top: 30px;
+}
+
+.alert-list {
+  max-height: 300px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.alert-item {
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: white;
+  border-left: 4px solid #2196F3;
+}
+
+.alert-item.alert-warning {
+  border-left-color: #ff9800;
+  background: #fff8e1;
+}
+
+.alert-item.alert-critical {
+  border-left-color: #f44336;
+  background: #ffebee;
+}
+
+.alert-time {
+  color: #666;
+  font-size: 0.85rem;
+  margin-right: 10px;
+}
+
+.empty-message {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+}
+
+/* 푸터 */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: white;
+  opacity: 0.8;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .role-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* 영상 확인 버튼 */
+.btn-view-video {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-view-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+}
+
+.student-card.status-disconnected .btn-view-video,
+.student-card.status-no_response .btn-view-video {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 영상 모달 */
+.video-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-modal-content {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.video-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.video-modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.btn-close-modal {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-close-modal:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.video-modal-body {
+  padding: 20px;
+  background: #000;
+}
+
+.video-modal-body video {
+  width: 640px;
+  max-width: 100%;
+  border-radius: 8px;
+}

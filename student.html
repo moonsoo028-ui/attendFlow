@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>학생 - 학습 모니터링</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+  <!-- MediaPipe -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+  <!-- PeerJS -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#6366f1",
+            "primary-dark": "#4f46e5",
+            "background-light": "#f3f4f6",
+            "background-dark": "#0f172a",
+            "card-light": "#ffffff",
+            "card-dark": "#1e293b",
+          },
+          fontFamily: {
+            sans: ['"Inter"', '"Noto Sans KR"', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            'xl': '1rem',
+            '2xl': '1.5rem',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+    .dark ::-webkit-scrollbar-thumb { background-color: #475569; }
+    
+    @keyframes bounce-once {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .animate-bounce-once {
+      animation: bounce-once 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 w-full bg-card-light/90 dark:bg-card-dark/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition-colors">
+          <span class="material-symbols-rounded text-2xl">arrow_back</span>
+        </a>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-primary">
+            <span class="material-symbols-rounded text-2xl">school</span>
+          </div>
+          <div class="flex flex-col">
+            <h1 class="text-base font-bold leading-tight text-slate-900 dark:text-white">학생 모니터링</h1>
+            <span class="text-xs text-slate-500 dark:text-slate-400">AI 자세 분석</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div id="connection-status" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded-full text-sm font-medium border border-slate-200 dark:border-slate-600">
+          <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+          연결 대기
+        </div>
+        <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+          <span class="material-symbols-rounded dark:hidden">dark_mode</span>
+          <span class="material-symbols-rounded hidden dark:inline">light_mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow p-3 sm:p-4">
+    <div class="max-w-4xl mx-auto space-y-4">
+      
+      <!-- Setup Form -->
+      <section id="setup-form" class="max-w-md mx-auto">
+        <div class="bg-card-light dark:bg-card-dark rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-8">
+            <div class="w-16 h-16 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mx-auto mb-5 text-primary">
+              <span class="material-symbols-rounded text-3xl">login</span>
+            </div>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2 text-center">수업 참여</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 text-center text-sm">이름과 교사 ID를 입력하여 수업에 참여하세요.</p>
+            
+            <div class="space-y-5">
+              <div>
+                <label for="student-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">이름</label>
+                <div class="relative">
+                  <span class="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+                  <input type="text" id="student-name" placeholder="홍길동" 
+                    class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                </div>
+              </div>
+              
+              <div>
+                <label for="student-grade" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">학년</label>
+                <div class="relative">
+                  <span class="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">school</span>
+                  <select id="student-grade" 
+                    class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all appearance-none">
+                    <option value="">학년 선택</option>
+                    <option value="1">1학년</option>
+                    <option value="2">2학년</option>
+                    <option value="3">3학년</option>
+                    <option value="4">4학년</option>
+                    <option value="5">5학년</option>
+                    <option value="6">6학년</option>
+                  </select>
+                  <span class="material-symbols-rounded absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                </div>
+              </div>
+              
+              <div>
+                <label for="teacher-id" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">교사 ID</label>
+                <div class="relative">
+                  <span class="material-symbols-rounded absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">key</span>
+                  <input type="text" id="teacher-id" placeholder="teacher-xxxxx-xxxxx" 
+                    class="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-mono text-sm">
+                </div>
+                <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">교사에게 받은 ID를 입력하세요</p>
+              </div>
+              
+              <button id="start-btn" class="w-full py-3 px-6 bg-primary hover:bg-primary-dark text-white font-semibold rounded-xl transition-all shadow-lg shadow-primary/30 hover:shadow-xl active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
+                <span class="material-symbols-rounded">videocam</span>
+                카메라 시작 & 연결
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Monitor Section -->
+      <section id="monitor-section" class="hidden space-y-4">
+        
+        <!-- Teacher Message Display -->
+        <div id="teacher-message-container" class="hidden">
+          <div id="teacher-message-box" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg overflow-hidden">
+            <div class="p-4">
+              <div class="flex items-start gap-3">
+                <div class="p-2 bg-white/20 rounded-lg flex-shrink-0">
+                  <span class="material-symbols-rounded text-white text-lg">campaign</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-white/80 text-xs font-medium mb-0.5">교사 메시지</p>
+                  <p id="teacher-message-text" class="text-white text-sm font-semibold"></p>
+                  <p id="teacher-message-time" class="text-white/60 text-xs mt-1"></p>
+                </div>
+                <button id="close-teacher-message" class="p-1 hover:bg-white/20 rounded-lg transition-colors text-white/80 hover:text-white flex-shrink-0">
+                  <span class="material-symbols-rounded text-lg">close</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Display -->
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="p-4 flex flex-col sm:flex-row gap-4 items-center">
+            <!-- Status Badge -->
+            <div id="status-display" class="flex-shrink-0">
+              <div class="w-28 h-28 rounded-xl bg-slate-100 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 transition-colors duration-300">
+                <span id="status-icon" class="material-symbols-rounded text-5xl mb-1 text-slate-400">hourglass_empty</span>
+                <span id="status-text" class="font-bold text-sm text-slate-500">감지중...</span>
+              </div>
+            </div>
+            
+            <!-- Focus Score -->
+            <div class="flex-shrink-0">
+              <div class="w-28 h-28 rounded-xl bg-slate-100 dark:bg-slate-800 flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700">
+                <span class="text-xs text-slate-400 mb-1">집중도</span>
+                <span id="focus-score" class="text-3xl font-bold text-emerald-500">100</span>
+                <span id="focus-level" class="text-xs font-medium text-emerald-500">집중</span>
+                <div class="w-16 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-2 overflow-hidden">
+                  <div id="focus-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Info -->
+            <div class="flex-grow text-center sm:text-left">
+              <h2 class="text-lg font-bold text-slate-900 dark:text-white">현재 상태</h2>
+              <p class="text-slate-500 dark:text-slate-400 text-sm">AI가 실시간으로 자세를 분석 중</p>
+              <div id="away-timer" class="text-red-500 font-semibold text-sm mt-1"></div>
+              <div class="mt-2">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg text-slate-500 dark:text-slate-400 font-mono text-xs border border-slate-200 dark:border-slate-600">
+                  <span class="material-symbols-rounded text-sm text-slate-400">fingerprint</span>
+                  <span id="my-peer-id">-</span>
+                </span>
+              </div>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="flex sm:flex-col gap-2 flex-shrink-0">
+              <button id="send-message-to-teacher-btn" class="hidden items-center justify-center gap-1.5 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-md active:scale-95">
+                <span class="material-symbols-rounded text-lg">chat_bubble</span>
+                메시지
+              </button>
+              <button id="stop-btn" class="hidden items-center justify-center gap-1.5 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium text-sm transition-all shadow-md active:scale-95">
+                <span class="material-symbols-rounded text-lg">stop_circle</span>
+                중지
+              </button>
+            </div>
+          </div>
+          <!-- Screen Share Status -->
+          <div id="screen-share-status" class="hidden items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 border-t border-indigo-100 dark:border-indigo-800">
+          </div>
+        </div>
+
+        <!-- Camera Preview -->
+        <div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                <span class="material-symbols-rounded text-lg">aperture</span>
+              </div>
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">카메라 미리보기</h3>
+            </div>
+            <div class="flex items-center gap-1.5 text-rose-500 font-medium text-xs">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              녹화 중
+            </div>
+          </div>
+          <div class="relative w-full bg-slate-900 rounded-lg overflow-hidden border border-slate-800">
+            <video id="video" autoplay playsinline class="hidden"></video>
+            <canvas id="canvas" width="640" height="480" class="w-full h-auto max-h-[45vh] object-contain"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Understanding Check Modal (이해도 체크) -->
+  <div id="understanding-check-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/60 dark:bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative z-20 w-full max-w-md bg-card-light dark:bg-card-dark rounded-2xl shadow-2xl overflow-hidden border-2 border-primary animate-bounce-once">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-primary to-indigo-600 px-6 py-4">
+        <div class="flex items-center gap-3 text-white">
+          <div class="p-2 bg-white/20 rounded-xl">
+            <span class="material-symbols-rounded text-2xl">help</span>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold">선생님 질문</h2>
+            <p class="text-white/80 text-xs">아래 질문에 답해주세요</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Question -->
+      <div class="p-6">
+        <p id="understanding-question-text" class="text-lg font-medium text-slate-800 dark:text-white text-center mb-6">
+          지금 설명한 내용이 이해가 되나요?
+        </p>
+        
+        <!-- Timer -->
+        <div class="flex justify-center mb-6">
+          <div class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+            <span class="material-symbols-rounded text-amber-500 text-lg">timer</span>
+            <span id="understanding-timer" class="font-mono font-bold text-slate-700 dark:text-slate-300">10</span>
+            <span class="text-slate-500 text-sm">초</span>
+          </div>
+        </div>
+        
+        <!-- Answer Buttons -->
+        <div class="grid grid-cols-2 gap-4">
+          <button id="understanding-yes-btn" class="flex flex-col items-center justify-center gap-2 p-6 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border-2 border-emerald-200 dark:border-emerald-800 rounded-xl transition-all active:scale-95 group">
+            <span class="material-symbols-rounded text-4xl text-emerald-500 group-hover:scale-110 transition-transform">check_circle</span>
+            <span class="font-bold text-emerald-700 dark:text-emerald-400">예</span>
+          </button>
+          <button id="understanding-no-btn" class="flex flex-col items-center justify-center gap-2 p-6 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 border-2 border-red-200 dark:border-red-800 rounded-xl transition-all active:scale-95 group">
+            <span class="material-symbols-rounded text-4xl text-red-500 group-hover:scale-110 transition-transform">cancel</span>
+            <span class="font-bold text-red-700 dark:text-red-400">아니요</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message Modal -->
+  <div id="student-message-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative z-20 w-full max-w-lg bg-card-light dark:bg-card-dark rounded-2xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
+      <div class="bg-gradient-to-r from-indigo-500 to-blue-600 px-6 py-5 flex items-center justify-between">
+        <div class="flex items-center space-x-3 text-white">
+          <span class="material-symbols-rounded text-2xl">chat_bubble</span>
+          <h2 class="text-lg font-bold">교사에게 메시지</h2>
+        </div>
+        <button id="close-student-message-modal" class="text-white/80 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-colors">
+          <span class="material-symbols-rounded text-xl">close</span>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="flex items-start space-x-3 text-slate-600 dark:text-slate-300">
+          <span class="material-symbols-rounded text-primary mt-0.5 text-lg">info</span>
+          <p class="text-sm font-medium">교사에게 질문이나 메시지를 보낼 수 있습니다.</p>
+        </div>
+        <textarea id="student-message-input" rows="4" class="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all resize-none" placeholder="메시지를 입력하세요..."></textarea>
+      </div>
+      <div class="px-6 py-5 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex gap-4">
+        <button id="cancel-student-message" class="flex-1 py-3 px-4 rounded-xl font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 transition-all">
+          취소
+        </button>
+        <button id="send-student-message" class="flex-1 py-3 px-4 rounded-xl font-semibold text-white bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all shadow-lg shadow-primary/30 flex items-center justify-center space-x-2 group">
+          <span class="material-symbols-rounded text-lg group-hover:-rotate-12 transition-transform">send</span>
+          <span>전송</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+  <script type="module" src="js/student-app.js"></script>
+</body>
+</html>
