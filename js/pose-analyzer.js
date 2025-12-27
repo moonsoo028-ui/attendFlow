@@ -206,10 +206,9 @@ class PoseAnalyzer {
       return STATUS.UNKNOWN;
     }
 
-    // 손들기 감지 (손목이 어깨보다 위에 있으면)
-    const shoulderY = Math.min(leftShoulder.y, rightShoulder.y);
-    const leftHandRaised = leftWrist.visibility > 0.5 && leftWrist.y < shoulderY - 0.05;
-    const rightHandRaised = rightWrist.visibility > 0.5 && rightWrist.y < shoulderY - 0.05;
+    // 손들기 감지 (손목이 머리(코) 위에 있으면)
+    const leftHandRaised = leftWrist.visibility > 0.5 && leftWrist.y < nose.y - 0.05;
+    const rightHandRaised = rightWrist.visibility > 0.5 && rightWrist.y < nose.y - 0.05;
     
     if (leftHandRaised || rightHandRaised) {
       return STATUS.HAND_RAISED;
